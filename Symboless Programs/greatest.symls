@@ -1,0 +1,13 @@
+let integer a and print "Enter Number 1: " and read a
+let integer b and print "Enter Number 2: " and read b
+let integer c and print "Enter Number 3: " and read c
+
+let integer greatest
+
+if a is greater-than b then 
+    if a is greater-than c then greatest is a else
+    greatest is c stop else
+    if b is greater-than c then greatest is b else greatest is c stop stop
+
+print "Greatest is: " then greatest
+end

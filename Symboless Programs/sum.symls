@@ -1,0 +1,7 @@
+let real number1 and print "Enter number 1: " and read number1
+let real number2 and print "Enter number 2: " and read number2
+
+let real sum is number1 plus number2
+
+print "Sum of " then number1 then " and " then number2 then " is " then sum
+end

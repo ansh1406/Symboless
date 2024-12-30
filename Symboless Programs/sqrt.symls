@@ -1,0 +1,17 @@
+let integer n and print "Enter a number: " and read n
+let integer left is 0 and let integer right is n and let integer mid
+
+let integer sqrt
+
+while left is less-than right plus 1 do 
+    mid is left plus right and
+    mid is mid upon 2 and
+    if mid into mid is equal-to n then
+        sqrt is mid and escape else if mid into mid is less-than n then 
+            sqrt is mid and
+            left is mid plus 1 else right is mid minus 1 and stop and 
+    stop and 
+recheck
+
+print "Square root of " then n then " is greater than or equal-to " then sqrt
+end

@@ -1,0 +1,11 @@
+let integer n and print "Enter no of elements: " and read n
+let integer-array nums-n
+let integer i is 0
+while i is less-than n do read nums-i and i is i plus 1 till-here
+let integer target and print "Enter target: " and read target
+let integer index is -1
+i is 0
+while i is less-than n do if nums-i is equal-to target then index is i and escape else stop and i is i plus 1  till-here
+
+if index is not-equal-to -1 then print "Target found at index " then index  else print "Target not found." stop
+end

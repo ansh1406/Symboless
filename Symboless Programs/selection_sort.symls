@@ -1,0 +1,37 @@
+leave to take input
+let integer n and print "Enter the number of elements: " and read n
+let integer-array arr-n
+let integer i is 0
+while i is less-than n do read arr-i and i is i plus 1 till-here
+
+leave logic
+let integer min and let integer minIndex
+let integer j
+let integer temp
+i is 0
+
+while i is less-than n do 
+    min is arr-i and
+    minIndex is i and
+    j is i plus 1 and
+    while j is less-than n do 
+        if arr-j is less-than min then 
+            min is arr-j and
+            minIndex is j else stop and
+        j is j plus 1 and
+    till-here and goto swap and
+    i is i plus 1 and
+till-here
+
+leave to print the sorted array
+print "Sorted array: " then newline
+i is 0
+while i is less-than n do print arr-i then " " and i is i plus 1 till-here
+end
+
+leave subroutine to swap the values
+subroutine swap
+temp is arr-i
+arr-i is min
+arr-minIndex is temp
+end

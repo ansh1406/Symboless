@@ -1,0 +1,71 @@
+{
+    "io":{
+        "inputFile":"stdin",
+        "outputFile":"stdout",
+        "errorFile":"stderr",
+        "preProcessedFile":"processed_program.symls"
+    },
+
+    "keywords":{
+        "let":"let",
+        "is":"is",
+        "if":"if",
+        "else":"else",
+        "then":"then",
+        "skip":"skip",
+        "stop":"stop",
+        "do":"do",
+        "while":"while",
+        "escape":"escape",
+        "recheck":"recheck",
+        "tillhere":"till-here",
+        "and":"and",
+        "goto":"goto",
+        "read":"read",
+        "print":"print",
+        "newline":"newline",
+        "leave":"leave",
+        "end":"end",
+        "subroutine":"subroutine"
+
+    },
+    "operators":{
+        "math":{
+            "plus":"plus",
+            "minus":"minus",
+            "into":"into",
+            "upon":"upon",
+            "modulo":"modulo",
+            "exponent":"exponent"
+        },
+        "logic":{
+            "equals":"equal-to",
+            "notEquals":"not-equal-to",
+            "greaterThan":"greater-than",
+            "lessThan":"less-than"
+        }
+    },
+    "datatypes":{
+        "integer":"integer",
+        "text":"text",
+        "real":"real",
+        "integerArray":"integer-array",
+        "textArray":"text-array",
+        "realArray":"real-array"
+    },
+    "errorMessages":{
+        "invalidSyntax":"Invalid Syntax",
+        "invalidDatatype":"Invalid Datatype",
+        "invalidOperator":"Invalid Operator",
+        "indexOutOfBounds":"Index Out of Bounds",
+        "invalidVariableName":"Invalid Variable Name",
+        "variableNotFound":"Variable Not Found"
+    },
+    "defaults":{
+        "arraySize":64,
+        "integerValue":0,
+        "realValue":0.0,
+        "textValue":""
+    }
+    
+}

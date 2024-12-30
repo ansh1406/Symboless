@@ -1,0 +1,13 @@
+let real num1 and let real num2 and let real result and let text operator
+
+print "Number 1: " and read num1
+print "Number 2: " and read num2
+print "Enter Operator: " and read operator
+
+if operator is equal-to "+" then result is num1 plus num2 else  stop
+if operator is equal-to "-" then result is num1 minus num2 else  stop
+if operator is equal-to "*" then result is num1 into num2 else  stop
+if operator is equal-to "/" then result is num1 upon num2 else  stop
+
+print "Result : " then result
+end
