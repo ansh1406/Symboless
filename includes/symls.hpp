@@ -1,7 +1,64 @@
 #pragma once
+// containers
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
+
+// For exit() function
+#include <stdlib.h>
+
+// For freopen() function
+#include <cstdio>
+
+// For pow() and fmod() functions
+#include <cmath>
+
+// For file handling
+#include <fstream>
+
+// For JSON parsing
+#include <json.hpp>
+
+typedef struct
+{
+    int *integer;
+    double *real;
+    std::string *text;
+    int type;
+} Multitype;
+
+// Functions for solving expressions
+int solveForInteger(std::string &expr, int &position);
+std::string solveForText(std::string &expr, int &position);
+double solveForReal(std::string &expr, int &position);
+int checkIntegralCondition(std::string &expr);
+int checkTextCondition(std::string &expr);
+int checkRealCondition(std::string &expr);
+int checkCondition(std::string &expr);
+
+// Functions for interpreting the code
+void interpret(std::string &expr);
+void initiate(std::string &expr);
+void printOutput(std::string &expr, int &position);
+void readFromUser(std::string &expr, int &position);
+void printError(int errCode);
+void endProgram();
+
+// Utility functions
+void trim(std::string &str, int &position);
+int power(int number, int exponent);
+int isNumber(std::string &str);
+int isString(std::string &str);
+int isReal(std::string &str);
+void readUntilNextSpace(std::string &expr, int &position, std::string &temp);
+int nextExpressionExists(std::string &expr, int &position);
+int findKeyword(std::string &expr, int &position, int keyword);
+int validateName(std::string name);
+Multitype getVariable(std::string varName);
+
+// Loading and preprocessing functions
+void preprocess(std::string fileName);
+void configure();
 
 std::map<std::string, int> integerVariables;
 std::map<std::string, std::string> textVariables;

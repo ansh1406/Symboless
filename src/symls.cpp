@@ -1,75 +1,12 @@
 #include <iostream>
 
-// containers
-#include <map>
-#include <string>
-#include <vector>
-
-// For exit() function
-#include <stdlib.h>
-
-// For freopen() function
-#include <cstdio>
-
-// For pow() and fmod() functions
-#include <cmath>
-
-// For file handling
-#include <fstream>
-
-// For JSON parsing
-#include <json.hpp>
-
-#include "grammar.hpp"
+#include "symls.hpp"
 
 using namespace std;
 
-// For handling multiple data types in a single variable
-typedef struct
-{
-    int *integer;
-    double *real;
-    string *text;
-    int type;
-} Multitype;
-
-// Functions for solving expressions
-int solveForInteger(string &expr, int &position);
-string solveForText(string &expr, int &position);
-double solveForReal(string &expr, int &position);
-int checkIntegralCondition(string &expr);
-int checkTextCondition(string &expr);
-int checkRealCondition(string &expr);
-int checkCondition(string &expr);
-
-// Functions for interpreting the code
-void interpret(string &expr);
-void initiate(string &expr);
-void printOutput(string &expr, int &position);
-void readFromUser(string &expr, int &position);
-void printError(int errCode);
-void endProgram();
-
-// Utility functions
-void trim(string &str, int &position);
-int power(int number, int exponent);
-int isNumber(string &str);
-int isString(string &str);
-int isReal(string &str);
-void readUntilNextSpace(string &expr, int &position, string &temp);
-int nextExpressionExists(string &expr, int &position);
-int findKeyword(string &expr, int &position, int keyword);
-int validateName(string name);
-Multitype getVariable(string varName);
-
-// Loading and preprocessing functions
-void preprocess(string fileName);
-void configure();
-
-// To store the variables
-
 // Status variables
 int currentLine = 0, escape = 0, recheckCondition = 0;
+ifstream program;
 
 int main(int argc, char *argv[])
 {
@@ -104,7 +41,7 @@ int main(int argc, char *argv[])
     preprocess(fileName);
 
     // Open the preprocessed file
-    ifstream program(preprocessedFileName);
+    program.open(preprocessedFileName);
 
     // If the file is not found
     if (program.fail())
@@ -120,6 +57,7 @@ int main(int argc, char *argv[])
         currentLine++;
         interpret(line);
     }
+    endProgram();
     return 0;
 }
 
@@ -374,7 +312,7 @@ void interpret(string &expr)
             if (temp != keywordsToString.at(IS))
             {
                 printError(INVALID_SYNTAX);
-                exit(0);
+                
             }
 
             // Solve the expression and store the value in the variable according to it's type
@@ -395,7 +333,7 @@ void interpret(string &expr)
         else
         {
             printError(VARIABLE_NOT_FOUND);
-            exit(0);
+            
         }
     }
 }
@@ -437,7 +375,7 @@ int solveForInteger(string &expr, int &position)
         else
         {
             printError(VARIABLE_NOT_FOUND);
-            exit(0);
+            
         }
     }
 
@@ -460,7 +398,7 @@ int solveForInteger(string &expr, int &position)
     else
     {
         printError(INVALID_SYNTAX);
-        exit(0);
+        
     }
 
     switch (op)
@@ -517,7 +455,7 @@ string solveForText(string &expr, int &position)
         else
         {
             printError(VARIABLE_NOT_FOUND);
-            exit(0);
+            
         }
     }
 
@@ -537,7 +475,7 @@ string solveForText(string &expr, int &position)
     else
     {
         printError(INVALID_SYNTAX);
-        exit(0);
+        
     }
     return result;
 }
@@ -573,7 +511,7 @@ double solveForReal(string &expr, int &position)
         else
         {
             printError(VARIABLE_NOT_FOUND);
-            exit(0);
+            
         }
     }
 
@@ -594,7 +532,7 @@ double solveForReal(string &expr, int &position)
     else
     {
         printError(INVALID_SYNTAX);
-        exit(0);
+        
     }
 
     switch (op)
@@ -657,7 +595,7 @@ int checkIntegralCondition(string &expr)
         return (solveForInteger(leftHalf, dummy1) != solveForInteger(rightHalf, dummy2));
     default:
         printError(INVALID_OPERATOR);
-        exit(0);
+        return 0;
     }
 }
 
@@ -695,7 +633,7 @@ int checkTextCondition(string &expr)
         return (solveForText(leftHalf, dummy1).compare(solveForText(rightHalf, dummy2)) != 0);
     default:
         printError(INVALID_OPERATOR);
-        exit(0);
+        return 0;
     }
 }
 
@@ -733,7 +671,7 @@ int checkRealCondition(string &expr)
         return (solveForReal(leftHalf, dummy1) != solveForReal(rightHalf, dummy2));
     default:
         printError(INVALID_OPERATOR);
-        exit(0);
+        return 0;
     }
 }
 
@@ -781,7 +719,7 @@ int checkCondition(string &expr)
     else
     {
         printError(VARIABLE_NOT_FOUND);
-        exit(0);
+        
     }
     return 0;
 }
@@ -833,7 +771,7 @@ void initiate(string &expr)
     else
     {
         printError(INVALID_DATA_TYPE);
-        exit(0);
+        
     }
 
     // Read the name of the variable
@@ -855,7 +793,7 @@ void initiate(string &expr)
                 if (validateName(arrayName) == 0)
                 {
                     printError(INVALID_NAME);
-                    exit(0);
+                    
                 }
 
                 string indexString = temp.substr(temp.find('-') + 1);
@@ -891,7 +829,7 @@ void initiate(string &expr)
     if (validateName(name) == 0)
     {
         printError(INVALID_NAME);
-        exit(0);
+        
     }
 
     // If the value is not provided
@@ -925,7 +863,7 @@ void initiate(string &expr)
     else
     {
         printError(INVALID_SYNTAX);
-        exit(0);
+        
     }
 
     // Initiate the variable with the value
@@ -985,7 +923,7 @@ void printOutput(string &expr, int &position)
         else
         {
             printError(VARIABLE_NOT_FOUND);
-            exit(0);
+            
         }
     }
 
@@ -1006,12 +944,14 @@ void printOutput(string &expr, int &position)
     else
     {
         printError(INVALID_SYNTAX);
-        exit(0);
+        
     }
 }
 
 void endProgram()
 {
+    program.close();
+    remove(preprocessedFileName.c_str());
     exit(0);
 }
 
@@ -1047,7 +987,7 @@ void readFromUser(string &expr, int &position)
     else
     {
         printError(VARIABLE_NOT_FOUND);
-        exit(0);
+        
     }
 
     trim(expr, position);
@@ -1066,7 +1006,7 @@ void readFromUser(string &expr, int &position)
     else
     {
         printError(INVALID_SYNTAX);
-        exit(0);
+        
     }
 }
 
@@ -1074,6 +1014,7 @@ void printError(int errCode)
 {
     cout << "Error at line : " << currentLine << endl;
     cout << errorMassage.at(errCode) << endl;
+    endProgram();
 }
 
 // Utility Functions
@@ -1267,7 +1208,7 @@ Multitype getVariable(string varName)
             else
             {
                 printError(INDEX_OUT_OF_BOUNDS);
-                exit(0);
+                
             }
         }
         else if (realArrays.find(arrayName) != realArrays.end())
@@ -1280,7 +1221,7 @@ Multitype getVariable(string varName)
             else
             {
                 printError(INDEX_OUT_OF_BOUNDS);
-                exit(0);
+                
             }
         }
         else if (textArrays.find(arrayName) != textArrays.end())
@@ -1293,7 +1234,7 @@ Multitype getVariable(string varName)
             else
             {
                 printError(INDEX_OUT_OF_BOUNDS);
-                exit(0);
+                
             }
         }
     }
