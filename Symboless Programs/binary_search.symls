@@ -1,0 +1,22 @@
+let integer size and print "Enter number of Elements: " and read size
+let integer-array arr-size
+
+let integer i is 0
+
+while i is less-than size do read arr-i and i is i plus 1 till-here
+
+let integer target and print "Enter target: " and read target
+
+let integer index is -1
+
+let integer left is 0 and let integer right is size
+
+while left is less-than right do
+    let integer mid is left plus right and
+    mid is mid upon 2 and
+    if arr-mid is equal-to target then index is mid and escape else
+        if arr-mid is less-than target then left is mid plus 1 else right is mid stop stop and
+ till-here
+
+ if index is not-equal-to -1 then print "Foud the element at index: " then index else print "Target not found!" stop
+ end
