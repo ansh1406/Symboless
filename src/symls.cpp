@@ -20,6 +20,8 @@
 // For JSON parsing
 #include <json.hpp>
 
+#include "grammar.hpp"
+
 using namespace std;
 
 // For handling multiple data types in a single variable
@@ -65,170 +67,6 @@ void preprocess(string fileName);
 void configure();
 
 // To store the variables
-map<string, int> integerVariables;
-map<string, string> textVariables;
-map<string, double> realVariables;
-map<string, vector<int>> integerArrays;
-map<string, vector<string>> textArrays;
-map<string, vector<double>> realArrays;
-map<string, vector<string>> subroutines;
-
-enum DATA_TYPES
-{
-    INTEGER,
-    TEXT,
-    REAL,
-    INTEGER_ARRAY,
-    TEXT_ARRAY,
-    REAL_ARRAY
-};
-
-enum OPERATORS
-{
-    PLUS,
-    MINUS,
-    UPON,
-    INTO,
-    MODULO,
-    EXPONENT,
-    LESS_THAN,
-    GREATER_THAN,
-    EQUAL_TO,
-    NOT_EQUAL_TO
-};
-
-enum KEYWORDS
-{
-    LET,
-    IS,
-    IF,
-    ELSE,
-    THEN,
-    SKIP,
-    STOP,
-    DO,
-    WHILE,
-    ESCAPE,
-    RECHECK,
-    TILLHERE,
-    AND,
-    GOTO,
-    READ,
-    PRINT,
-    NEWLINE,
-    LEAVE,
-    END,
-    SUBROUTINE
-};
-
-enum ERRORS
-{
-    INVALID_SYNTAX,
-    INVALID_DATA_TYPE,
-    INVALID_OPERATOR,
-    VARIABLE_NOT_FOUND,
-    INDEX_OUT_OF_BOUNDS,
-    INVALID_NAME
-};
-
-// Default configuration
-string preprocessedFileName = "processed_program.symls";
-const string configFileName = "symlsConfig.json";
-int DEFAULT_ARRAY_SIZE = 64;
-int DEFAULT_INTEGER_VALUE = 0;
-string DEFAULT_TEXT_VALUE = "";
-double DEFAULT_REAL_VALUE = 0.0;
-vector<string> reservedWords = {"let", "is", "if", "else", "then", "skip", "stop", "do", "while", "escape", "recheck", "till-here", "and", "goto", "read", "print", "newline", "leave", "end", "subroutine", "plus", "minus", "upon", "into", "modulo", "exponent", "less-than", "greater-than", "equal-to", "not-equal-to", "integer", "text", "real", "integer-array", "text-array", "real-array"};
-
-map<string, int> mathOperators = {
-    {"plus", PLUS},
-    {"minus", MINUS},
-    {"upon", UPON},
-    {"into", INTO},
-    {"modulo", MODULO},
-    {"exponent", EXPONENT}};
-
-map<int, string> mathOperatorToString = {
-    {PLUS, "plus"},
-    {MINUS, "minus"},
-    {UPON, "upon"},
-    {INTO, "into"},
-    {MODULO, "modulo"},
-    {EXPONENT, "exponent"}};
-
-map<string, int> logicalOperators = {
-    {"less-than", LESS_THAN},
-    {"greater-than", GREATER_THAN},
-    {"equal-to", EQUAL_TO},
-    {"not-equal-to", NOT_EQUAL_TO}};
-
-map<string, int> dataTypes = {
-    {"integer", INTEGER},
-    {"text", TEXT},
-    {"real", REAL},
-    {"integer-array", INTEGER_ARRAY},
-    {"text-array", TEXT_ARRAY},
-    {"real-array", REAL_ARRAY}};
-
-map<int, string> dataTypeToString = {
-    {INTEGER, "integer"},
-    {TEXT, "text"},
-    {REAL, "real"},
-    {INTEGER_ARRAY, "integer-array"},
-    {TEXT_ARRAY, "text-array"},
-    {REAL_ARRAY, "real-array"}};
-
-map<int, string> keywordsToString = {
-    {LET, "let"},
-    {IS, "is"},
-    {IF, "if"},
-    {ELSE, "else"},
-    {THEN, "then"},
-    {SKIP, "skip"},
-    {STOP, "stop"},
-    {DO, "do"},
-    {WHILE, "while"},
-    {ESCAPE, "escape"},
-    {RECHECK, "recheck"},
-    {TILLHERE, "till-here"},
-    {AND, "and"},
-    {GOTO, "goto"},
-    {READ, "read"},
-    {PRINT, "print"},
-    {NEWLINE, "newline"},
-    {LEAVE, "leave"},
-    {END, "end"},
-    {SUBROUTINE, "subroutine"}};
-
-map<string, int> keywords = {
-    {"let", LET},
-    {"is", IS},
-    {"if", IF},
-    {"else", ELSE},
-    {"then", THEN},
-    {"skip", SKIP},
-    {"stop", STOP},
-    {"do", DO},
-    {"while", WHILE},
-    {"escape", ESCAPE},
-    {"recheck", RECHECK},
-    {"till-here", TILLHERE},
-    {"and", AND},
-    {"goto", GOTO},
-    {"read", READ},
-    {"print", PRINT},
-    {"newline", NEWLINE},
-    {"leave", LEAVE},
-    {"end", END},
-    {"subroutine", SUBROUTINE}};
-
-map<int, string> errorMassage = {
-    {INVALID_SYNTAX, "Invalid syntax"},
-    {INVALID_DATA_TYPE, "Invalid data type"},
-    {INVALID_OPERATOR, "Invalid operator"},
-    {VARIABLE_NOT_FOUND, "Variable not found"},
-    {INDEX_OUT_OF_BOUNDS, "Index out of bounds"},
-    {INVALID_NAME, "Invalid name"}};
 
 // Status variables
 int currentLine = 0, escape = 0, recheckCondition = 0;
@@ -817,6 +655,9 @@ int checkIntegralCondition(string &expr)
         return (solveForInteger(leftHalf, dummy1) == solveForInteger(rightHalf, dummy2));
     case NOT_EQUAL_TO:
         return (solveForInteger(leftHalf, dummy1) != solveForInteger(rightHalf, dummy2));
+    default:
+        printError(INVALID_OPERATOR);
+        exit(0);
     }
 }
 
@@ -852,6 +693,9 @@ int checkTextCondition(string &expr)
         return (solveForText(leftHalf, dummy1).compare(solveForText(rightHalf, dummy2)) == 0);
     case NOT_EQUAL_TO:
         return (solveForText(leftHalf, dummy1).compare(solveForText(rightHalf, dummy2)) != 0);
+    default:
+        printError(INVALID_OPERATOR);
+        exit(0);
     }
 }
 
@@ -887,6 +731,9 @@ int checkRealCondition(string &expr)
         return (solveForReal(leftHalf, dummy1) == solveForReal(rightHalf, dummy2));
     case NOT_EQUAL_TO:
         return (solveForReal(leftHalf, dummy1) != solveForReal(rightHalf, dummy2));
+    default:
+        printError(INVALID_OPERATOR);
+        exit(0);
     }
 }
 
@@ -936,6 +783,7 @@ int checkCondition(string &expr)
         printError(VARIABLE_NOT_FOUND);
         exit(0);
     }
+    return 0;
 }
 
 void initiate(string &expr)

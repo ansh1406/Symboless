@@ -1,0 +1,27 @@
+# Build and binary files
+build/
+*.exe
+*.obj
+*.o
+*.a
+*.so
+*.dll
+*.out
+
+# CMake files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# User-specific files
+*.user
+*.log
+*.swp
+*.swo
+*.tmp
+
+# VS Code settings
+.vscode/
+
